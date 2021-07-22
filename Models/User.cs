@@ -19,12 +19,15 @@ namespace BookLibrary_Fill_Rouge.Models
         public string LastName { get; set; }
 
 
-        [Display(Name = "Phone Number")]
-        [Required]
-        public string Phone { get; set; }
+        //[Display(Name = "Phone Number")]
+        //[Required]
+        //public string Phone { get; set; }
 
 
         [Required]
         public string Address { get; set; }
+
+        [Display(Name = "Profile Photo")]
+        public byte[] ProfilePhoto { get; set; }
     }
 }

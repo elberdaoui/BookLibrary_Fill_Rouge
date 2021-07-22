@@ -24,6 +24,9 @@ namespace BookLibrary_Fill_Rouge.Models
         [Required, JsonIgnore]
         public string Password { get; set; }
 
+        [Required]
+        public string Address { get; set; }
+
         //[Required]
         [JsonIgnore]
         public byte[] Photo { get; set; }

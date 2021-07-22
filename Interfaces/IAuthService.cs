@@ -6,7 +6,7 @@ using BookLibrary_Fill_Rouge.Models;
 
 namespace BookLibrary_Fill_Rouge.Interfaces
 {
-    interface IAuthService
+    public interface IAuthService
     {
         Task<Auth> Register(Register register);
         Task<Auth> Login(Login login);
