@@ -25,8 +25,11 @@ namespace BookLibrary_Fill_Rouge.Models
         public decimal Price { get; set; }
 
         [Required, Display(Name = "Photo Cover")]
-        public string PhotoCover { get; set; }
+        public byte[] PhotoCover { get; set; }
 
         public ICollection<Category> Categories { get; set; }
+
+        [NotMapped]
+        public string CategoriesId { get; set; }
     }
 }

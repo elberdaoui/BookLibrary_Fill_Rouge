@@ -15,6 +15,12 @@ namespace BookLibrary_Fill_Rouge.Models
         }
 
         public DbSet<User> UsersInfo { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Rate> Rates { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Library> Libraries { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder builder)

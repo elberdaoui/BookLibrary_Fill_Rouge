@@ -19,6 +19,10 @@ namespace BookLibrary_Fill_Rouge.Models
         public string Description { get; set; }
 
         public Author Author { get; set; }
+
         public ICollection<Book> Books { get; set; }
+
+        [NotMapped]
+        public string BooksId { get; set; }
     }
 }

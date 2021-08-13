@@ -42,6 +42,7 @@ namespace BookLibrary_Fill_Rouge
 
             services.AddControllers();
 
+            services.AddSession();
 
             services.AddDbContext<UserContext>(o =>
                 o.UseSqlServer(Configuration.GetConnectionString("con")));
@@ -59,6 +60,9 @@ namespace BookLibrary_Fill_Rouge
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddAuthentication(options =>
                 {
@@ -101,6 +105,10 @@ namespace BookLibrary_Fill_Rouge
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookLibrary_Fill_Rouge v1"));
             }
+
+            app.UseSession();
+
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 

@@ -3,10 +3,8 @@ using System;
 
 namespace BookLibrary_Fill_Rouge.Migrations
 {
-    public partial class RoleSeed : Migration
+    public partial class roleSeed : Migration
     {
-
-
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(

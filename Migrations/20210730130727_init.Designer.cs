@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookLibrary_Fill_Rouge.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20210722011045_RoleSeed")]
-    partial class RoleSeed
+    [Migration("20210730130727_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,192 @@ namespace BookLibrary_Fill_Rouge.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("BookCategory", b =>
+                {
+                    b.Property<string>("BooksId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoriesId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BooksId", "CategoriesId");
+
+                    b.HasIndex("CategoriesId");
+
+                    b.ToTable("BookCategory");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Author", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("Birthdate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authors");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Book", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BookName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LibraryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("PhotoCover")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTimeOffset>("PublishedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("LibraryId");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Library", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsSold")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Isloan")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LoanPeriod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Libraries");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Payment", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PayDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Rate", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BookId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RatingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RatingValue")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Rates");
+                });
 
             modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.User", b =>
                 {
@@ -78,6 +264,9 @@ namespace BookLibrary_Fill_Rouge.Migrations
                     b.Property<byte[]>("ProfilePhoto")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<string>("RateId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -97,6 +286,8 @@ namespace BookLibrary_Fill_Rouge.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("RateId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -232,6 +423,79 @@ namespace BookLibrary_Fill_Rouge.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BookCategory", b =>
+                {
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Book", b =>
+                {
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Author", null)
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Library", null)
+                        .WithMany("Books")
+                        .HasForeignKey("LibraryId");
+
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Payment", null)
+                        .WithMany("Books")
+                        .HasForeignKey("PaymentId");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Category", b =>
+                {
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Author", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Library", b =>
+                {
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Payment", b =>
+                {
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Rate", b =>
+                {
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId");
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.User", b =>
+                {
+                    b.HasOne("BookLibrary_Fill_Rouge.Models.Rate", null)
+                        .WithMany("Users")
+                        .HasForeignKey("RateId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -281,6 +545,26 @@ namespace BookLibrary_Fill_Rouge.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Library", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Payment", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("BookLibrary_Fill_Rouge.Models.Rate", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

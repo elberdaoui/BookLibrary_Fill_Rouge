@@ -21,8 +21,7 @@ namespace BookLibrary_Fill_Rouge.Models
         [Required]
         public DateTimeOffset Birthdate { get; set; }
 
-        [Required]
-        public string Photo { get; set; }
+        public byte[] Photo { get; set; }
 
 
         public ICollection<Book> Books { get; set; }

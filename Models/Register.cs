@@ -28,7 +28,7 @@ namespace BookLibrary_Fill_Rouge.Models
         public string Address { get; set; }
 
         //[Required]
-        [JsonIgnore]
+        
         public byte[] Photo { get; set; }
     }
 }
