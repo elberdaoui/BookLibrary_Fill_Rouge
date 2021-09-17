@@ -23,7 +23,7 @@ namespace BookLibrary_Fill_Rouge.Controllers
         [HttpGet("Categories")]
         public List<Category> GetCategories()
         {
-            return _categoryService.getCategories();
+            return _categoryService.GetCategories();
         }
 
         [HttpPost("CreateCategory")]
@@ -33,7 +33,7 @@ namespace BookLibrary_Fill_Rouge.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _categoryService.createCategory(category);
+            _categoryService.CreateCategory(category);
             return Ok(category);
         }
 
@@ -42,7 +42,7 @@ namespace BookLibrary_Fill_Rouge.Controllers
         {
             if (ModelState.IsValid)
             {
-                _categoryService.updatCategory(id, category);
+                _categoryService.UpdateCategory(id, category);
                 return Ok(category);
             }
             else

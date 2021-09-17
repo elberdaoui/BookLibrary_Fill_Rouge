@@ -8,9 +8,9 @@ namespace BookLibrary_Fill_Rouge.Interfaces
 {
     public interface ICategoryService
     {
-        List<Category> getCategories();
-        Category createCategory(Category category);
-        Category updatCategory(string id, Category category);
+        List<Category> GetCategories();
+        Category CreateCategory(Category category);
+        Category UpdateCategory(string id, Category category);
         Task<string> DeleteCategory(string id);
     }
 }

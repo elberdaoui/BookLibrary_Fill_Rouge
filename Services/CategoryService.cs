@@ -12,12 +12,17 @@ namespace BookLibrary_Fill_Rouge.Services
     {
         private readonly UserContext _context;
 
-        public List<Category> getCategories()
+        public CategoryService(UserContext context)
+        {
+            _context = context;
+        }
+
+        public List<Category> GetCategories()
         {
             return _context.Categories.ToList();
         }
 
-        public Category createCategory(Category category)
+        public Category CreateCategory(Category category)
         {
             if (category != null)
             {
@@ -31,7 +36,7 @@ namespace BookLibrary_Fill_Rouge.Services
             }
         }
 
-        public Category updatCategory(string id, Category category)
+        public Category UpdateCategory(string id, Category category)
         {
             var fingCategory = _context.Categories.FirstOrDefault(c => c.Id == id);
             if (fingCategory != null)

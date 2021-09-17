@@ -42,7 +42,7 @@ namespace BookLibrary_Fill_Rouge
 
             services.AddControllers();
 
-            services.AddSession();
+            //services.AddSession();
 
             services.AddDbContext<UserContext>(o =>
                 o.UseSqlServer(Configuration.GetConnectionString("con")));
@@ -63,6 +63,20 @@ namespace BookLibrary_Fill_Rouge
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            //services.AddScoped<ICategoryService, CategoryService>();
+            //services.AddTransient<Book>();
+            //services.AddTransient<Category>();
+            //services.AddTransient<User>();
+            //services.AddTransient<Auth>();
+            //services.AddTransient<Author>();
+
+
+
+            //services.AddTransient<IBookService, BookService>();
+            //services.AddTransient<IAuthService, AuthService>();
+            //services.AddTransient<IUserService, UserService>();
+            //services.AddTransient<IAuthorService, AuthorService>();
+            //services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddAuthentication(options =>
                 {
@@ -106,7 +120,7 @@ namespace BookLibrary_Fill_Rouge
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookLibrary_Fill_Rouge v1"));
             }
 
-            app.UseSession();
+            //app.UseSession();
 
             app.UseStaticFiles();
 
