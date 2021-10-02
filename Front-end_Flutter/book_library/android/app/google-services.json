@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "663570257748",
+    "project_id": "cartforlibbook",
+    "storage_bucket": "cartforlibbook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663570257748:android:16f3814cb99bbdac851ac1",
+        "android_client_info": {
+          "package_name": "com.elibraryapp.book_library"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663570257748-7i3ekkkma9m7r2fmp9isohd4q1hva3pv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ2Bz8Qv2rMhRj6cGjatg9zTlYi7hCdX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663570257748-7i3ekkkma9m7r2fmp9isohd4q1hva3pv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
