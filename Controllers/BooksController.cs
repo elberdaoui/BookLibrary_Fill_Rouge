@@ -21,19 +21,19 @@ namespace BookLibrary_Fill_Rouge.Controllers
         }
 
         [HttpGet("Books")]
-        public IActionResult GetBooks()
+        public List<Book> GetBooks()
         {
-            return (IActionResult)_bookService.GetBooks();
+            return _bookService.GetBooks();
         }
 
         [HttpPost( "CreateBook")]
-        public IActionResult CreateBook([FromBody] Book book)
+        public IActionResult CreateBook([FromForm]Book book, IFormFile image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _bookService.CreateBook(book);
+            _bookService.CreateBook(book, image);
             return Ok(book);
         }
 

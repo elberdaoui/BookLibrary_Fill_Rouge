@@ -26,17 +26,21 @@ namespace BookLibrary_Fill_Rouge.Services
             return _context.Books.ToList();
         }
 
-        public Book CreateBook(Book book)
+        public Book CreateBook(Book book, IFormFile image)
         {
-            if (book == null)
+            if (book != null)
             {
-                return null;
+                MemoryStream ms = new MemoryStream();
+                 image.CopyToAsync(ms);
+                book.PhotoCover = ms.ToArray();
+                 _context.Add(book);
+                 _context.SaveChanges();
+                return book;
+                
             }
             else
             {
-                _context.Add(book);
-                _context.SaveChanges();
-                return book;
+                return null;
             }
 
         }

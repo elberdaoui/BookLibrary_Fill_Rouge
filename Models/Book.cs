@@ -24,9 +24,12 @@ namespace BookLibrary_Fill_Rouge.Models
         [Required]
         public decimal Price { get; set; }
 
-        [Required, Display(Name = "Photo Cover")]
+        [Display(Name = "Photo Cover")]
         public byte[] PhotoCover { get; set; }
 
+        public bool IsFav { get; set; }
+
+        public float Rating { get; set; }
         public ICollection<Category> Categories { get; set; }
 
         [NotMapped]

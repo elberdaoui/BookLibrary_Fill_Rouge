@@ -58,11 +58,11 @@ namespace BookLibrary_Fill_Rouge
                 conf.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<UserContext>();
 
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IBookService, BookService>();
-            services.AddScoped<IAuthorService, AuthorService>();
-            services.AddScoped<ICategoryService, CategoryService>();
+            //services.AddScoped<IAuthService, AuthService>();
+            //services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<IBookService, BookService>();
+            //services.AddScoped<IAuthorService, AuthorService>();
+            //services.AddScoped<ICategoryService, CategoryService>();
             //services.AddScoped<ICategoryService, CategoryService>();
             //services.AddTransient<Book>();
             //services.AddTransient<Category>();
@@ -72,11 +72,11 @@ namespace BookLibrary_Fill_Rouge
 
 
 
-            //services.AddTransient<IBookService, BookService>();
-            //services.AddTransient<IAuthService, AuthService>();
-            //services.AddTransient<IUserService, UserService>();
-            //services.AddTransient<IAuthorService, AuthorService>();
-            //services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IBookService, BookService>();
+            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAuthorService, AuthorService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddAuthentication(options =>
                 {

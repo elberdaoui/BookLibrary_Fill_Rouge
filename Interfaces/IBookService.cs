@@ -10,7 +10,7 @@ namespace BookLibrary_Fill_Rouge.Interfaces
     public interface IBookService
     {
         List<Book> GetBooks();
-        Book CreateBook(Book book);
+        Book CreateBook(Book book, IFormFile image);
         //Task<Book> CreateOrUpdate(string? id);
         Task<string> DeleteBook(string id);
         Task<Book> EditBook(Book book, string id, IFormFile image);
