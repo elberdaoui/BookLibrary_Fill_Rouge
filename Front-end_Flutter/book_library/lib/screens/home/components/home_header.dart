@@ -21,11 +21,11 @@ class HomeHeader extends StatelessWidget {
             svgSrc: 'assets/icons/Cart Icon.svg',
             press: () => Navigator.pushNamed(context, CartScreen.routeName),
           ),
-          IconBtnWthCounter(
-            svgSrc: 'assets/icons/Bell.svg',
-            press: () {},
-            numOfItems: 3,
-          ),
+          // IconBtnWthCounter(
+          //   svgSrc: 'assets/icons/Bell.svg',
+          //   press: () {},
+          //   numOfItems: 3,
+          // ),
         ],
       ),
     );

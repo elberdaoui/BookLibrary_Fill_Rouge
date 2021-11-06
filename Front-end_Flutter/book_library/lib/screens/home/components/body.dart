@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 
+// import 'package:book_library/components/product_card.dart';
 import 'package:book_library/components/product_card_1.dart';
 import 'package:book_library/models/Book.dart';
 import 'package:book_library/models/Cart.dart';
@@ -36,6 +37,9 @@ class _BodyState extends State<Body> {
             if (listOfBooks[i] != null) {
               Map<String, dynamic> mapp = listOfBooks[i];
               books.add(Book.fromObject(mapp));
+              // filteredBooks = books;
+              booksList = books;
+              print('filtered books: $booksList');
             }
           }
         }
@@ -65,6 +69,7 @@ class _BodyState extends State<Body> {
     //   });
     // });
     getBooks();
+
     super.initState();
   }
 
@@ -129,15 +134,39 @@ class _BodyState extends State<Body> {
         //             Navigator.pushNamed(context, DetailsScreen.routeName);
         //           },
         //         )),
+
         ...List.generate(
-            books.length,
-            (index) => ProductCard(
-                  product: books[index],
-                  press: () {
-                    Navigator.pushNamed(context, DetailsScreen.routeName,
-                        arguments: ProductDetailsArguments(book: books[index]));
-                  },
-                ))
+          books.length,
+          (index) => ProductCard(
+            product: books[index],
+            press: () {
+              Navigator.pushNamed(context, DetailsScreen.routeName,
+                  arguments: ProductDetailsArguments(book: books[index]));
+            },
+          ),
+        ),
+        // filteredBooks.isEmpty
+        //     ? ListView.builder(
+        //     scrollDirection: Axis.vertical,
+        //     shrinkWrap: true,
+        //     itemBuilder: (context, index) => ProductCard(
+        //         product: books[index],
+        //         press: () {
+        //           Navigator.pushNamed(context, DetailsScreen.routeName,
+        //               arguments:
+        //               ProductDetailsArguments(book: books[index]));
+        //         }))
+        //     : ListView.builder(
+        //     itemCount: filteredBooks.length,
+        //     itemBuilder: (context, index) => ProductCard(
+        //       key: ValueKey(filteredBooks[index].id.toString()),
+        //       product: filteredBooks[index],
+        //       press: () {
+        //         Navigator.pushNamed(context, DetailsScreen.routeName,
+        //             arguments:
+        //             ProductDetailsArguments(book: books[index]));
+        //       },
+        //     ))
       ],
     )));
   }

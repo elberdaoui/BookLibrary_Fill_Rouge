@@ -45,21 +45,25 @@ namespace BookLibrary_Fill_Rouge.Services
 
         }
 
-        public async Task<Book> EditBook(Book book, string id, IFormFile image)
+        public Book EditBook(Book book, string id, IFormFile image)
         {
+            if (id == null)
+            {
+                return null;
+            }
             var findBook = _context.Books.FirstOrDefault(b => b.Id == id);
 
             if (findBook != null)
             {
+                MemoryStream ms = new MemoryStream();
+                image.CopyToAsync(ms);
+                findBook.PhotoCover = ms.ToArray();
                 findBook.BookName = book.BookName;
                 findBook.Description = book.Description;
                 findBook.Price = book.Price;
                 findBook.CategoriesId = findBook.CategoriesId; //await _context.Categories.FirstOrDefaultAsync(c => c.Id == book.Id);
-                MemoryStream ms = new MemoryStream();
-                await image.CopyToAsync(ms);
-                findBook.PhotoCover = ms.ToArray();
                 _context.Update(findBook);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return findBook;
 
             }
@@ -86,14 +90,14 @@ namespace BookLibrary_Fill_Rouge.Services
         //    throw new NotImplementedException();
         //}
 
-        public async Task<string> DeleteBook(string id)
+        public string DeleteBook(string id)
         {
             //var books = new Book();
             var book = _context.Books.FirstOrDefault(b =>b.Id == id);
             if (book != null)
             {
                 var del = _context.Remove(book);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return del.State == EntityState.Deleted ? $"the Book {book.BookName} has been deleted" : $"Something went wrong";
             }
             else

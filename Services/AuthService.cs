@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using BookLibrary_Fill_Rouge.Helpers;
 using BookLibrary_Fill_Rouge.Interfaces;
 using BookLibrary_Fill_Rouge.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -31,24 +33,47 @@ namespace BookLibrary_Fill_Rouge.Services
             _jwt = jwt.Value;
         }
 
-        public async Task<Auth> Register(Register register)
+        public async Task<Auth> Register(Register register, IFormFile image)
         {
+            User usr;
             if (await _userManager.FindByEmailAsync(register.Email) is not null || await _userManager.FindByNameAsync(register.UserName) is not null)
             {
                 return new Auth { Message = "Email Already registered" };
             }
 
-
-
-            var usr = new User
+            if (image == null)
             {
-                UserName = register.UserName,
-                Email = register.Email,
-                FirstName = register.FirstName,
-                LastName = register.LastName,
-                Address = register.Address,
-                ProfilePhoto = register.Photo
-            };
+                //MemoryStream ms = new MemoryStream();
+                //await image.CopyToAsync(ms);
+
+
+                 usr = new User
+                {
+                    UserName = register.UserName,
+                    Email = register.Email,
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
+                    Address = register.Address,
+                    ProfilePhoto = null
+                };
+            }
+            else
+            {
+                MemoryStream ms = new MemoryStream();
+                await image.CopyToAsync(ms);
+
+
+                 usr = new User
+                {
+                    UserName = register.UserName,
+                    Email = register.Email,
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
+                    Address = register.Address,
+                    ProfilePhoto = ms.ToArray()
+                };
+            }
+            
 
             var data = await _userManager.CreateAsync(usr, register.Password);
 
@@ -129,6 +154,7 @@ namespace BookLibrary_Fill_Rouge.Services
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
             var roleClaims = new List<Claim>();
+            var photo = Convert.ToBase64String(user.ProfilePhoto);
 
             foreach (var role in roles)
                 roleClaims.Add(new Claim("roles", role));
@@ -138,7 +164,8 @@ namespace BookLibrary_Fill_Rouge.Services
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim("uid", user.Id)
+                    new Claim("uid", user.Id),
+                    new Claim("photo", photo)
                 }
                 .Union(userClaims)
                 .Union(roleClaims);

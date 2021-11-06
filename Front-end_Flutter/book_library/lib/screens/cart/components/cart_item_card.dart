@@ -13,10 +13,10 @@ class CartItemCard extends StatelessWidget {
   const CartItemCard({
     Key? key,
     this.cart,
-    required this.book,
+    this.book,
   }) : super(key: key);
 
-  final Book book;
+  final Book? book;
   final Cart? cart;
 
   @override
@@ -33,7 +33,9 @@ class CartItemCard extends StatelessWidget {
               // child: Image.asset(book.images[0]),
               // child: Image.memory(Book.byteConvert(book.photo.asInt64List())),
               child: Image.memory(
-                base64Decode(book.photo),
+                // base64Decode(book.photo),
+                // base64Decode(cart!.photo!),
+                base64Decode(cart!.photo),
                 fit: BoxFit.cover,
               ),
               decoration: BoxDecoration(
@@ -51,7 +53,9 @@ class CartItemCard extends StatelessWidget {
             children: [
               Text(
                 // cart.books.title,
-                book.bookName,
+                // book.bookName,
+                // cart!.bookName!,
+                cart!.bookName,
                 overflow: TextOverflow.ellipsis,
                 // textAlign: TextAlign.left,
                 // textWidthBasis: TextWidthBasis.longestLine,
@@ -66,14 +70,20 @@ class CartItemCard extends StatelessWidget {
               Text.rich(TextSpan(
                   // text: '\$${cart.books.price}',
                   // text: '\$${cart.books.price}',
-                  text: '\$${book.price}',
+                  // text: '\$${book.price}',
+                  text: '\$${cart!.price}',
                   style: TextStyle(
                     color: kPrimaryColor,
                   ),
                   children: [
                     TextSpan(
-                        // text: ' x${cart!.numOfitems}',
-                        style: TextStyle(color: kTextColor))
+                        text: ' x${cart!.numOfitems}',
+                        // text: 'x${book.quantity}',
+                        style: TextStyle(color: kTextColor)),
+                    // TextSpan(
+                    //     text: ' \n${cart!.uid}',
+                    //     // text: 'x${book.quantity}',
+                    //     style: TextStyle(color: kTextColor)),
                   ]))
             ],
           ),

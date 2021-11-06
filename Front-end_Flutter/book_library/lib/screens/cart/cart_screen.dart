@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:book_library/models/Book.dart';
 import 'package:book_library/screens/credit_card/credit_card.dart';
+import 'package:book_library/services/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:book_library/components/default_button.dart';
@@ -11,6 +12,8 @@ import 'package:book_library/screens/cart/components/body.dart';
 import 'package:book_library/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../sqlite_database.dart';
 
 class CartScreen extends StatefulWidget {
   static String routeName = '/cart';
@@ -22,31 +25,36 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   late Book bbkk;
+  late SqliteDB dbHandler;
+  late List<Cart> cartItems;
+  late Map<String, dynamic> payload;
+  SecureStorage _storage = SecureStorage();
+
   @override
   void initState() {
+    this.dbHandler = SqliteDB();
+    getCartLength();
+    // getCartLength();
     totalAmount;
-    booksList.length;
-    fetchAddedBooks();
+    cartsList.length;
+    // fetchAddedBooks();
     super.initState();
   }
 
-  fetchAddedBooks() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    Map<String, dynamic> fetchData = jsonDecode(pref.getString('book_key')!);
-    // List<dynamic> fetchData = jsonDecode(pref.getString('book_key')!);
+  getCartLength() async {
+    String jwt = await _storage.readData('jwt');
+    Map<String, dynamic> payload = await _storage.getTokenClaims(jwt);
+    cartItems = await this.dbHandler.getItems(payload['uid']);
 
-    bbkk = Book.fromObject(fetchData.toString());
-    // String? temp = pref.getString('book_key');
-    // List<Book> newBook = Book.decode(temp!);
-    // var otherBookList = pref.setString('book_key', Book.encode(booksList));
-    // print(newBook);
-    print(fetchData);
-    print('=================================');
-    // print(bbkk.toMap());
+    setState(() {
+      cartsList = cartItems;
+    });
+    // return cartsList;
   }
 
   @override
   Widget build(BuildContext context) {
+    // carts = await getCartLength();
     return Scaffold(
       appBar: buildAppBar(context),
       body: Body(),
@@ -63,7 +71,8 @@ class _CartScreenState extends State<CartScreen> {
             style: TextStyle(color: Colors.black),
           ),
           Text(
-            '${booksList.length} items',
+            // '${booksList.length} items',
+            '${cartsList.length == 0 ? 'no' : cartsList.length} items',
             style: Theme.of(context).textTheme.caption,
           )
         ],
@@ -130,7 +139,7 @@ class CheckOutCard extends StatelessWidget {
                 Text.rich(TextSpan(text: 'Total:\n', children: [
                   TextSpan(
                       // text: '\$${context.select((Cart a) => a.total)}',
-                      text: '\$$totalAmount',
+                      text: '\$${totalAmount.toDouble()}',
                       style: TextStyle(fontSize: 16, color: Colors.black))
                 ])),
                 SizedBox(

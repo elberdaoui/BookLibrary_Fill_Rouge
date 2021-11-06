@@ -1,3 +1,4 @@
+import 'package:book_library/models/Register.dart';
 import 'package:flutter/material.dart';
 import 'package:book_library/components/social_card.dart';
 import 'package:book_library/constants.dart';

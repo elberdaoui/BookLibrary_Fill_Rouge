@@ -1,3 +1,10 @@
+import 'dart:convert';
+import 'dart:ffi';
+
+// import 'package:book_library/models/User.dart';
+import 'package:book_library/models/User.dart';
+import 'package:book_library/services/api_book_library.dart';
+import 'package:book_library/services/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:book_library/components/custom_suffix_icon.dart';
 import 'package:book_library/components/default_button.dart';
@@ -16,11 +23,19 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
-  late String email;
-  late String password;
+  late String email = '';
+  late String password = '';
   late bool remember = false;
   final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
+  Map<String, String> headers = new Map();
+
+  @override
+  void initState() {
+    // headers["Authorization"] = 'Bearer ${User.fromJson(null).token}';
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -68,7 +83,41 @@ class _SignInFormState extends State<SignInForm> {
               press: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                  Map<String, dynamic> map = Map<String, dynamic>();
+                  ApiBookService.login(email, password).then((response) {
+                    if (response.body.isNotEmpty)
+                      map = json.decode(response.body);
+                    print(response.statusCode);
+                    var getToken = response.body.split(',')[5];
+                    print(getToken);
+                    var splitedToken = getToken.split('.')[1];
+                    print(splitedToken);
+
+                    if (response.statusCode == 200) {
+                      SecureStorage secureStorage = SecureStorage();
+                      setState(() {
+                        secureStorage.writeData('jwt', getToken);
+                      });
+                      User.fromJson(map);
+                      Navigator.pushNamed(
+                          context, LoginSuccessScreen.routeName);
+                    } else {
+                      if (map.containsKey("message")) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => getAlertDialog(
+                                'Login failed', '${map['message']}', context));
+                      }
+                    }
+                  }).catchError((err) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => getAlertDialog(
+                            "Login failed", '${err.toString()}', context));
+                  });
+
+                  // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                  // ApiBookService.login(email, password);
                 }
               },
             )
@@ -155,6 +204,17 @@ class _SignInFormState extends State<SignInForm> {
           suffixIcon: CustomSuffixIcon(
             svgIcon: 'assets/icons/Mail.svg',
           )),
+    );
+  }
+
+  AlertDialog getAlertDialog(title, content, context) {
+    return AlertDialog(
+      title: Text('$title'),
+      content: Text('$content'),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.of(context).pop(), child: Text('Close'))
+      ],
     );
   }
 }

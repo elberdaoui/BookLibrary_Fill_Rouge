@@ -39,7 +39,7 @@ namespace BookLibrary_Fill_Rouge.Controllers
 
 
         [HttpPut("EditBook/{id}")]
-        public IActionResult EditBook(string id, [FromForm] Book book, IFormFile image)
+        public IActionResult EditBook(string id, [FromForm]Book book, IFormFile image)
         {
             _bookService.EditBook(book, id, image);
             return Ok(book);

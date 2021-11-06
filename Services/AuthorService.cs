@@ -41,7 +41,7 @@ namespace BookLibrary_Fill_Rouge.Services
             }
         }
 
-        public async Task<Author> EditAuthor(string id, Author author, IFormFile image)
+        public Author EditAuthor(string id, Author author, IFormFile image)
         {
             var findAuthor = _context.Authors.FirstOrDefault(a => a.Id == id);
             if (findAuthor != null)
@@ -50,10 +50,10 @@ namespace BookLibrary_Fill_Rouge.Services
                 findAuthor.Bio = author.Bio;
                 findAuthor.Birthdate = author.Birthdate;
                 MemoryStream ms = new MemoryStream();
-                await image.CopyToAsync(ms);
+                image.CopyToAsync(ms);
                 findAuthor.Photo = ms.ToArray();
                 _context.Update(findAuthor);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return findAuthor;
 
             }

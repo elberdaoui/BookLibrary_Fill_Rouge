@@ -11,7 +11,7 @@ namespace BookLibrary_Fill_Rouge.Interfaces
     {
         public List<Author> Authors();
         public Author CreateAuthor(Author author, IFormFile image);
-        public Task<Author> EditAuthor(string id, Author author, IFormFile image);
+        public Author EditAuthor(string id, Author author, IFormFile image);
         public string DeleteAuthor(string id);
     }
 }

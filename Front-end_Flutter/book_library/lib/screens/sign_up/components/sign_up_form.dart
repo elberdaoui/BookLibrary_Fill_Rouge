@@ -43,8 +43,11 @@ class _SignUpFormState extends State<SignUpForm> {
                   text: 'Continue',
                   press: () {
                     if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
                       Navigator.pushNamed(
-                          context, CompleteProfileScreen.routeName);
+                          context, CompleteProfileScreen.routeName,
+                          arguments:
+                              SignUpFormArguments(email: email, pwd: password));
                     }
                   },
                 )
@@ -169,4 +172,11 @@ class _SignUpFormState extends State<SignUpForm> {
           )),
     );
   }
+}
+
+class SignUpFormArguments {
+  final String email;
+  final String pwd;
+
+  SignUpFormArguments({required this.email, required this.pwd});
 }

@@ -15,7 +15,8 @@ class Book {
   // late List<Category>? _categories;
   late DateTime _publishedDate;
   late bool _isFav;
-  late int _rating;
+  late double _rating;
+  late int _quantity;
 
   Book(
       this._bookNm,
@@ -25,7 +26,8 @@ class Book {
       // this._categories,
       this._publishedDate,
       this._isFav,
-      this._rating);
+      this._rating,
+      this._quantity);
   Book.WithId(
       this._id,
       this._bookNm,
@@ -35,8 +37,8 @@ class Book {
       // this._categories,
       this._publishedDate,
       this._isFav,
-      this._rating);
-
+      this._rating,
+      this._quantity);
   Book.fromObject(dynamic obj) {
     this._id = obj['id'];
     this.newBookName = obj['bookName'];
@@ -45,7 +47,8 @@ class Book {
     this.newPublishedDate = DateTime.parse(obj['publishedDate']);
     this.newIsFav = obj['isFav'];
     this.newPhoto = obj['photoCover'];
-    this.newRating = obj['rating'];
+    this.newRating = double.parse(obj['rating'].toString());
+    this.newQuantity = obj['quantity'];
   }
 
   Map<String, dynamic> toMap() {
@@ -57,6 +60,7 @@ class Book {
     map['publishedDate'] = _publishedDate;
     map['isFav'] = _isFav;
     map['rating'] = _rating;
+    map['quantity'] = _quantity;
     if (_id != null) {
       map['id'] = _id;
     }
@@ -72,6 +76,7 @@ class Book {
         'photoCover': book.photo,
         'publishedDate': book.publishedDate.toString(),
         'isFav': book.isFav,
+        'quantity': book.quantity,
       };
 
   // static List<Map<String, dynamic>> toListMappp(List<Book> book) => {
@@ -102,7 +107,8 @@ class Book {
   // List<Category>? get categories => _categories;
   DateTime get publishedDate => _publishedDate;
   bool get isFav => _isFav;
-  int get rating => _rating;
+  double get rating => _rating;
+  int get quantity => _quantity;
 
   set newBookName(String name) {
     _bookNm = name;
@@ -128,8 +134,12 @@ class Book {
     _isFav = isFav;
   }
 
-  set newRating(int rating) {
+  set newRating(double rating) {
     _rating = rating;
+  }
+
+  set newQuantity(int quantity) {
+    _quantity = quantity;
   }
 
   static String byteConvert(Uint8List input) {

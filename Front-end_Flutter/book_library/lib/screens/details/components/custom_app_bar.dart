@@ -6,7 +6,7 @@ import '../../../size_config.dart';
 
 //ignore: must_be_immutable
 class CustomAppBar extends PreferredSize {
-  int? rating;
+  double? rating;
   CustomAppBar({this.rating})
       : super(
             preferredSize: Size.fromHeight(AppBar().preferredSize.height),

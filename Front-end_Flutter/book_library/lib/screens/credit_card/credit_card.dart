@@ -1,6 +1,13 @@
+import 'dart:async';
+
 import 'package:book_library/models/Cart.dart';
+import 'package:book_library/models/Order.dart';
+import 'package:book_library/screens/cart/cart_screen.dart';
 import 'package:book_library/screens/credit_card/existing_credit_card/existing_card_srceen.dart';
+import 'package:book_library/screens/home/home_screen.dart';
+import 'package:book_library/services/storage.dart';
 import 'package:book_library/services/stripe_service.dart';
+import 'package:book_library/sqlite_database.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -14,6 +21,9 @@ class CreditCards extends StatefulWidget {
 }
 
 class CreditCardsState extends State<CreditCards> {
+  late SqliteDB _sqliteDB;
+  SecureStorage _storage = SecureStorage();
+  late Map<String, dynamic> payload;
   onItemPress(BuildContext context, int index) async {
     switch (index) {
       case 0:
@@ -31,17 +41,51 @@ class CreditCardsState extends State<CreditCards> {
     await dialog.show();
     var response = await StripeService.payWithNewCard(
         amount: totalAmount.toString(), currency: 'USD');
-    await dialog.hide();
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(response.message),
-      duration:
-          new Duration(milliseconds: response.success == true ? 1200 : 5000),
-    ));
+    //     .then((value) async {
+    //   await dialog.hide();
+    //   Scaffold.of(context).showSnackBar(SnackBar(
+    //
+    //     content: Text(value.message!),
+    //     duration:
+    //         new Duration(milliseconds: value.success == true ? 1200 : 5000),
+    //   ));
+    //   Navigator.pushNamed(context, CartScreen.routeName);
+    // });
+    // await dialog.hide();
+    // Scaffold.of(context).showSnackBar(SnackBar(
+    //   content: Text(response.message!),
+    //   duration:
+    //       new Duration(milliseconds: response.success == true ? 1200 : 5000),
+    // ));
+    await dialog.hide().whenComplete(() {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(response.message!),
+        duration:
+            new Duration(milliseconds: response.success == true ? 1200 : 5000),
+      ));
+      if (response.success == true) {
+        for (var cart in cartsList) {
+          this
+              ._sqliteDB
+              .openDB()
+              .whenComplete(
+                  () async => await this._sqliteDB.insertItemsOrder(cart))
+              .whenComplete(
+                  () async => await this._sqliteDB.deleteItem(cart.id!));
+          print(cart);
+        }
+        Timer(
+            Duration(milliseconds: 1201),
+            () => Navigator.pushNamedAndRemoveUntil(
+                context, HomeScreen.routeName, (Route route) => false));
+      }
+    });
   }
 
   @override
   void initState() {
     super.initState();
+    this._sqliteDB = SqliteDB();
     StripeService.init();
     final Cart? cart;
   }

@@ -31,14 +31,14 @@ namespace BookLibrary_Fill_Rouge.Controllers
         }
 
         [HttpPost("CreateUser")]
-        public async Task<IActionResult> CreateUser([FromBody] Register register)
+        public async Task<IActionResult> CreateUser([FromForm] Register register, IFormFile image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var isRegistered = await _authService.Register(register);
+            var isRegistered = await _authService.Register(register, image);
             if (!isRegistered.IsAuthenticated)
             {
                 return BadRequest(isRegistered.Message);

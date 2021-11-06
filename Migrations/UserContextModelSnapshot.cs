@@ -86,7 +86,6 @@ namespace BookLibrary_Fill_Rouge.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("PhotoCover")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<decimal>("Price")
@@ -94,6 +93,9 @@ namespace BookLibrary_Fill_Rouge.Migrations
 
                     b.Property<DateTimeOffset>("PublishedDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<float>("Rating")
                         .HasColumnType("real");

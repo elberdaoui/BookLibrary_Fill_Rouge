@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:book_library/models/Book.dart';
 import 'package:book_library/models/Cart.dart';
+import 'package:book_library/screens/home/home_screen.dart';
 import 'package:book_library/services/api_book_library.dart';
+import 'package:book_library/services/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:book_library/components/default_button.dart';
@@ -20,6 +23,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int currentPage = 0;
+  SecureStorage _storage = SecureStorage();
   List<Map<String, String>> splashData = [
     {'text': 'Welcome to SMART LIBRARY', 'image': 'assets/images/splash_1.png'},
     {'text': 'Enjoy reading and buying', 'image': 'assets/images/splash_2.png'},
@@ -41,6 +45,11 @@ class _BodyState extends State<Body> {
   //
   //   super.initState();
   // }
+  @override
+  void initState() {
+    // keepUserLoggedIn();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +93,8 @@ class _BodyState extends State<Body> {
                   DefaultButton(
                     text: 'Continue',
                     press: () {
-                      Navigator.pushNamed(context, SignInScreen.routeName);
+                      // Navigator.pushNamed(context, SignInScreen.routeName);
+                      keepUserLoggedIn();
                     },
                   ),
                   Spacer(),
@@ -106,5 +116,16 @@ class _BodyState extends State<Body> {
         borderRadius: BorderRadius.circular(3),
       ),
     );
+  }
+
+  void keepUserLoggedIn() async {
+    String jwt = await _storage.readData('jwt');
+    if (jwt == null) {
+      Timer(Duration(seconds: 2),
+          () => Navigator.pushNamed(context, SignInScreen.routeName));
+    } else {
+      Timer(Duration(seconds: 2),
+          () => Navigator.pushNamed(context, HomeScreen.routeName));
+    }
   }
 }

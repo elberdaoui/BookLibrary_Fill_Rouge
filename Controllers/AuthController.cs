@@ -21,14 +21,14 @@ namespace BookLibrary_Fill_Rouge.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] Register register)
+        public async Task<IActionResult> Register([FromForm] Register register, IFormFile image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await _auth.Register(register);
+            var result = await _auth.Register(register, image);
 
             if (!result.IsAuthenticated)
             {

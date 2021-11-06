@@ -30,6 +30,8 @@ namespace BookLibrary_Fill_Rouge.Models
         public bool IsFav { get; set; }
 
         public float Rating { get; set; }
+
+        public int Quantity { get; set; }
         public ICollection<Category> Categories { get; set; }
 
         [NotMapped]

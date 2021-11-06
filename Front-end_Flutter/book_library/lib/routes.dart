@@ -1,5 +1,7 @@
+import 'package:book_library/screens/admin/admin_screen.dart';
 import 'package:book_library/screens/credit_card/credit_card.dart';
 import 'package:book_library/screens/credit_card/existing_credit_card/existing_card_srceen.dart';
+import 'package:book_library/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:book_library/screens/cart/cart_screen.dart';
 import 'package:book_library/screens/complete_profile/complete_profile_screen.dart';
@@ -27,4 +29,6 @@ final Map<String, WidgetBuilder> routes = {
   ProfileScreen.routeName: (context) => ProfileScreen(),
   ExistingCardScreen.routeName: (context) => ExistingCardScreen(),
   CreditCards.routeName: (context) => CreditCards(),
+  OrderScreen.routeName: (context) => OrderScreen(),
+  AdminScreen.routeName: (context) => AdminScreen(),
 };

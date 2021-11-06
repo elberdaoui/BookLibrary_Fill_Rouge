@@ -45,7 +45,7 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
     await dialog.hide();
     Scaffold.of(context)
         .showSnackBar(SnackBar(
-          content: Text(response.message),
+          content: Text(response.message!),
           duration: new Duration(milliseconds: 5000),
         ))
         .closed

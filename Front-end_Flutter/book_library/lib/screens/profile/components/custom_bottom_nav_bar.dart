@@ -1,3 +1,4 @@
+import 'package:book_library/screens/order/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:book_library/screens/home/home_screen.dart';
@@ -56,10 +57,12 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () =>
+                  Navigator.pushNamed(context, OrderScreen.routeName),
               icon: SvgPicture.asset(
-                'assets/icons/Chat bubble Icon.svg',
-                color: MenuState.message == selectedMenu
+                // 'assets/icons/Chat bubble Icon.svg',
+                'assets/icons/receipt.svg',
+                color: MenuState.orders == selectedMenu
                     ? kPrimaryColor
                     : inActiveIconColor,
               ),

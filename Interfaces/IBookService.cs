@@ -12,7 +12,8 @@ namespace BookLibrary_Fill_Rouge.Interfaces
         List<Book> GetBooks();
         Book CreateBook(Book book, IFormFile image);
         //Task<Book> CreateOrUpdate(string? id);
-        Task<string> DeleteBook(string id);
-        Task<Book> EditBook(Book book, string id, IFormFile image);
+        string DeleteBook(string id);
+        //Task<Book> EditBook(Book book, string id, IFormFile image);
+        Book EditBook(Book book, string id, IFormFile image);
     }
 }
