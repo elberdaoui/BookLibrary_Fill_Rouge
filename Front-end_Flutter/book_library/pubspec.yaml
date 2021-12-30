@@ -42,6 +42,8 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   image_picker:
   mask_text_input_formatter: ^2.0.0
+  intl: ^0.17.0
+  flutter_slidable: ^0.6.0
 
 dev_dependencies:
   flutter_test:

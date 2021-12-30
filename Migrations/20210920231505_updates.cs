@@ -10,14 +10,14 @@ namespace BookLibrary_Fill_Rouge.Migrations
                 name: "IsFav",
                 table: "Books",
                 type: "bit",
-                nullable: false,
+                nullable: true,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<float>(
                 name: "Rating",
                 table: "Books",
                 type: "real",
-                nullable: false,
+                nullable: true,
                 defaultValue: 0f);
         }
 

@@ -123,6 +123,7 @@ class _BodyState extends State<Body> {
                         ],
                       ),
                     ),
+
                     onDismissed: (direction) async {
                       await this.dbHandler.deleteItem(cartsList[index].id!);
                       setState(() {

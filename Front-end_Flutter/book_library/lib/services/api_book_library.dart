@@ -14,7 +14,7 @@ class BookLibService {
   // static String baseUrl = 'http://10.0.2.2:5000/api'; // url for emulator
 
   static String baseUrl =
-      'https://10.0.0.4:5001/api'; // url for phone device (https)
+      'https://10.0.0.9:5001/api'; // url for phone device (https)
   static String authorUrl = '${BookLibService.baseUrl}/Authors/';
   static String userUrl = '${BookLibService.baseUrl}/User/';
   static String categoryUrl = '${BookLibService.baseUrl}/Categories/';
@@ -75,74 +75,40 @@ class ApiBookService {
     return await http.get(Uri.parse('${BookLibService.bookUrl}Books'));
   }
 
-  static Future<bool> addBook(body) async {
-    final response = await http
-        .post(Uri.parse('${BookLibService.bookUrl}CreateBook'), body: body);
-    if (response.statusCode == 200) {
-      print('work');
-      return true;
-    } else {
-      print('not work');
-      return false;
-    }
+  static Future addBook(String bookName, String description, double price,
+      DateTime publishedDate, int quantity, File photo) async {
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('${BookLibService.bookUrl}CreateBook'));
+    var pic = await http.MultipartFile.fromPath('image', photo.path);
+    request.files.add(pic);
+    request.fields['bookName'] = bookName;
+    request.fields['description'] = description;
+    request.fields['price'] = price.toString();
+    request.fields['publishedDate'] = publishedDate.toString();
+    request.fields['quantity'] = quantity.toString();
+    var result = await request.send();
+    return result;
   }
 
-  // static login(String email, String password) async {
-  //   var response = await http.post(Uri.parse('${BookLibService.loginUrl}'),
-  //       body: {'email': email, 'password': password});
-  //   if (response.statusCode == 200) return response.body;
-  //   return null;
-  // }
-  // static Future login(String email, String password) async {
-  //   return await http.post(Uri.parse('${BookLibService.authUrl}'),
-  //       body: jsonEncode({'email': email, 'password': password}),
-  //       headers: {'Content-Type': 'application/json; charset=UTF-8'});
-  // }
-  // static Future login(String email, String password) async {
-  //   List<User> users = [];
-  //   Map<String, dynamic> map;
-  //   var res = await http.post(
-  //     Uri.parse('${BookLibService.authUrl}Login'),
-  //     body: json.encode({'email': email, 'password': password}),
-  //     headers: {'Content-Type': 'application/json; charset=UTF-8'},
-  //   ).then((value) {
-  //     map = json.decode(value.body);
-  //     if (map.length > 0) {
-  //       // for (int i = 0; i < map.length; i++) {
-  //       if (map.isNotEmpty) {
-  //         users.add(User.fromJson(map));
-  //       }
-  //       // }
-  //     }
-  //     print(value.body);
-  //     // return map;
-  //   });
-  //   return res;
-  // }
+  static Future editBook(String id, String bookName, String description,
+      double price, DateTime publishedDate, int quantity, File photo) async {
+    var request = http.MultipartRequest(
+        'PUT', Uri.parse('${BookLibService.bookUrl}EditBook/$id'));
+    var pic = await http.MultipartFile.fromPath('image', photo.path);
+    request.files.add(pic);
+    request.fields['bookName'] = bookName;
+    request.fields['description'] = description;
+    request.fields['price'] = price.toString();
+    request.fields['publishedDate'] = publishedDate.toString();
+    request.fields['quantity'] = quantity.toString();
+    var result = await request.send();
+    return result;
+  }
 
-  // static Future login(String email, String password) async {
-  //   List<User> users = [];
-  //   User user;
-  //   Map<String, dynamic> map;
-  //   var res = await http.post(
-  //     Uri.parse('${BookLibService.authUrl}Login'),
-  //     body: json.encode({'email': email, 'password': password}),
-  //     headers: {'Content-Type': 'application/json; charset=UTF-8'},
-  //   ).then((value) {
-  //     map = json.decode(value.body);
-  //
-  //     if (map.isNotEmpty) {
-  //       users.add(User.fromJson(map));
-  //     }
-  //
-  //     // print(value.body);
-  //     // return map;
-  //   });
-  //
-  //   // print(user.token);
-  //
-  //   return users;
-  // }
+  static Future deleteBook(String id) async {
+    return await http
+        .delete(Uri.parse('${BookLibService.bookUrl}DeleteBook/$id'));
+  }
 
   static Future login(String email, String password) async {
     return await http.post(

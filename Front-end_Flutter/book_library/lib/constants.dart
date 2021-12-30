@@ -32,7 +32,13 @@ const String kMatchPassError = "Passwords don't match";
 const String kNameNullError = "Please Enter your name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
-
+const String kBookNameNullError = 'Please Enter the book name';
+const String kDescNullError = 'Please Enter description for book';
+const String kPriceNullError = 'Please Enter book price';
+const String kRatingNullError = 'Please Enter initial rating';
+const String kQuantityNullError = 'Please Enter quantity';
+const String kFavNullError = 'Please choose one';
+const String kPubDateNullError = 'Please Enter date (format: mm/dd/yyyy)';
 final otpInputDecoration = InputDecoration(
     contentPadding: EdgeInsets.symmetric(vertical: 15),
     enabledBorder: outlineInputBorder(),

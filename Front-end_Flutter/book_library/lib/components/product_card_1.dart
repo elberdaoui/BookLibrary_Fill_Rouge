@@ -2,36 +2,44 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:book_library/models/Book.dart';
+import 'package:book_library/models/WishList.dart';
+import 'package:book_library/services/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:book_library/models/Products.dart';
 
 import '../constants.dart';
 import '../size_config.dart';
+import '../sqlite_database.dart';
 
 class ProductCard extends StatefulWidget {
   // double scWidth = MediaQuery.of(context).size.width;
-  ProductCard(
-      {Key? key,
-      required this.product,
-      // this.width = 140,
-      this.aspectRatio = 1.02,
-      required this.press})
-      : super(key: key);
+  ProductCard({
+    Key? key,
+    required this.product,
+    // this.width = 140,
+    this.aspectRatio = 1.02,
+    required this.press,
+    this.wishList,
+  }) : super(key: key);
 
   final Book product;
   // final double width;
   final double aspectRatio;
   final GestureTapCallback press;
+  final WishList? wishList;
 
   @override
   _ProductCardState createState() => _ProductCardState();
 }
 
 class _ProductCardState extends State<ProductCard> {
+  late SqliteDB dbHandler;
+  SecureStorage _storage = SecureStorage();
   // late List<int> base64;
   @override
   void initState() {
+    this.dbHandler = SqliteDB();
     super.initState();
   }
 
@@ -86,13 +94,39 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(15),
-                    onTap: () {
+                    onTap: () async {
                       // bool fav = widget.product.isFav;
+                      String jwt = await _storage.readData('jwt');
+                      Map<String, dynamic> payload =
+                          await _storage.getTokenClaims(jwt);
                       setState(() {
-                        if (widget.product.isFav) {
-                          widget.product.newIsFav = false;
+                        // if (widget.product.isFav) {
+                        //   widget.product.newIsFav = false;
+                        // } else {
+                        //   widget.product.newIsFav = true;
+                        // }
+                        if (widget.wishList != null &&
+                            widget.wishList!.isFav == 1) {
+                          WishList wish = WishList(
+                              uid: payload['uid'],
+                              bookId: widget.product.id,
+                              bookName: widget.product.bookName,
+                              photo: widget.product.photo,
+                              price: widget.product.price,
+                              isFav: false);
+                          this.dbHandler.openDB().whenComplete(() async =>
+                              await this.dbHandler.updateWishlistItems(
+                                  id: widget.wishList!.id, wishList: wish));
                         } else {
-                          widget.product.newIsFav = true;
+                          WishList wish = WishList(
+                              uid: payload['uid'],
+                              bookId: widget.product.id,
+                              bookName: widget.product.bookName,
+                              photo: widget.product.photo,
+                              price: widget.product.price,
+                              isFav: true);
+                          this.dbHandler.openDB().whenComplete(() async =>
+                              await this.dbHandler.insertWishlistItems(wish));
                         }
                       });
                     },

@@ -13,6 +13,7 @@ import 'package:book_library/routes.dart';
 import 'package:book_library/screens/profile/profile_screen.dart';
 import 'package:book_library/screens/splash/splash_screen.dart';
 import 'package:book_library/theme.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -50,6 +51,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
