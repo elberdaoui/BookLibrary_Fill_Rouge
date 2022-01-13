@@ -20,7 +20,7 @@ namespace BookLibrary_Fill_Rouge.Models
 
         public Author Author { get; set; }
 
-        public ICollection<Book> Books { get; set; }
+        public virtual ICollection<BookCategory> Books { get; set; }
 
         [NotMapped]
         public string BooksId { get; set; }

@@ -29,7 +29,11 @@ namespace BookLibrary_Fill_Rouge.Controllers
         [HttpPost("CreateCategory")]
         public IActionResult CreateCategory(Category category)
         {
-            if (TryValidateModel(!ModelState.IsValid))
+            //if (TryValidateModel(!ModelState.IsValid))
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }

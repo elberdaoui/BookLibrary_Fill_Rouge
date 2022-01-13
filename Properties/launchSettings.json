@@ -18,12 +18,13 @@
     },
     "BookLibrary_Fill_Rouge": {
       "commandName": "Project",
+      "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "https://10.0.0.9:5001;http://10.0.0.9:5000"
+      "applicationUrl": "https://10.0.0.7:5001;http://10.0.0.7:5000"
     }
   }
 }

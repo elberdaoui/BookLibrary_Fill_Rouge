@@ -26,6 +26,13 @@ namespace BookLibrary_Fill_Rouge.Controllers
             return _bookService.GetBooks();
         }
 
+        [HttpGet("BooksByCategory/{id}")]
+        public List<Book> GetBooksByCategory(string id)
+        {
+            var book = _bookService.GetBooksByCategory(id);
+            return book;
+        }
+
         [HttpPost( "CreateBook")]
         public IActionResult CreateBook([FromForm]Book book, IFormFile image)
         {

@@ -26,15 +26,46 @@ namespace BookLibrary_Fill_Rouge.Services
             return _context.Books.ToList();
         }
 
+        public List<Book> GetBooksByCategory(string id)
+        {
+            var booksByCat = _context.Categories
+                .Include(b => b.Books)
+                .ThenInclude(y => y.Book).FirstOrDefault(x => x.Id == id);
+            //var booksByCat = _context.Books.Include(b => b.Categories)
+            //    .ThenInclude(y => y.Book)
+            //    .Where(x => x.CategoriesId == id).ToList();
+            //var booksByCat = _context.Books.Include(b => b.Categories).ToList();
+            //var booksByCat = _context.Categories.Include(b => b.Id == id).FirstOrDefault();
+            //var booksss = booksByCat.ForEach((e) => e.Books);
+            //var bbg = _context.BookCategory.Where(bc => bc.CategoriesId == id).ToList();
+            //var books = _context.Books.FirstOrDefault(b => b.Id == booksByCat.)
+            List<Book> books = new();
+            foreach (var bookCategory in booksByCat.Books)
+            {
+                books.Add(_context.Books.FirstOrDefault(b => b.Id == bookCategory.BooksId));
+                //books.Add(bookCategory.);
+
+            }
+
+            return books;
+        }
+
         public Book CreateBook(Book book, IFormFile image)
         {
+            BookCategory bc = new();
             if (book != null)
             {
                 MemoryStream ms = new MemoryStream();
                  image.CopyToAsync(ms);
                 book.PhotoCover = ms.ToArray();
-                 _context.Add(book);
-                 _context.SaveChanges();
+                //book.CategoriesId ;
+                //bk.Id = book.Id;
+                
+                _context.Add(book);
+                bc.CategoriesId = book.CategoriesId;
+                bc.BooksId = book.Id;
+                _context.Add(bc);
+                _context.SaveChanges();
                 return book;
                 
             }
@@ -52,6 +83,7 @@ namespace BookLibrary_Fill_Rouge.Services
                 return null;
             }
             var findBook = _context.Books.FirstOrDefault(b => b.Id == id);
+            var findCategory = _context.BookCategory.FirstOrDefault(bc => bc.BooksId == id);
 
             if (findBook != null)
             {
@@ -61,8 +93,12 @@ namespace BookLibrary_Fill_Rouge.Services
                 findBook.BookName = book.BookName;
                 findBook.Description = book.Description;
                 findBook.Price = book.Price;
-                findBook.CategoriesId = findBook.CategoriesId; //await _context.Categories.FirstOrDefaultAsync(c => c.Id == book.Id);
+                //findBook.CategoriesId = findBook.CategoriesId; //await _context.Categories.FirstOrDefaultAsync(c => c.Id == book.Id);
                 _context.Update(findBook);
+                //findCategory.CategoriesId = findBook.CategoriesId;
+                //findCategory.BooksId = findBook.Id;
+                
+                //_context.Update(findCategory);
                 _context.SaveChanges();
                 return findBook;
 

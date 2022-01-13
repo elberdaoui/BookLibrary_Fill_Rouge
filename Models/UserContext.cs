@@ -21,7 +21,25 @@ namespace BookLibrary_Fill_Rouge.Models
         public DbSet<Rate> Rates { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Library> Libraries { get; set; }
+        public DbSet<BookCategory> BookCategory { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BookCategory>().HasKey(bc => new{bc.BooksId, bc.CategoriesId});
+            modelBuilder.Entity<BookCategory>()
+                .HasOne(b => b.Book)
+                .WithMany(ba => ba.Categories)
+                .HasForeignKey(bi => bi.BooksId);
+
+            modelBuilder.Entity<BookCategory>()
+                .HasOne(b => b.Category)
+                .WithMany(ba => ba.Books)
+                .HasForeignKey(bi => bi.CategoriesId);
+
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{

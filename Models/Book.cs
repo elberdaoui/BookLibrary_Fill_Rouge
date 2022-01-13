@@ -32,7 +32,7 @@ namespace BookLibrary_Fill_Rouge.Models
         public float Rating { get; set; }
 
         public int Quantity { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public virtual ICollection<BookCategory> Categories { get; set; }
 
         [NotMapped]
         public string CategoriesId { get; set; }
